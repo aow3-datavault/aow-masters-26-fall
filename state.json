@@ -1,6 +1,6 @@
 {
   "season": "Fall",
-  "revision": 7,
+  "revision": 8,
   "broadcastRevision": 0,
   "publishedId": "r1-2",
   "rounds": [
@@ -25,7 +25,7 @@
             {
               "name": "Nightsoul C",
               "faction": "confederation",
-              "clan": "",
+              "clan": "_-!-MAS-T-ERS-!-_",
               "portrait": "/fall-portraits/106.webp"
             }
           ]
