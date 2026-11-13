@@ -1,7 +1,8 @@
 {
   "season": "Fall",
-  "revision": 0,
-  "publishedId": null,
+  "revision": 6,
+  "broadcastRevision": 0,
+  "publishedId": "r1-2",
   "rounds": [
     {
       "title": "1/4 финала",
