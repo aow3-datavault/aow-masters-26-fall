@@ -1,6 +1,6 @@
 {
   "season": "Fall",
-  "revision": 6,
+  "revision": 7,
   "broadcastRevision": 0,
   "publishedId": "r1-2",
   "rounds": [
@@ -68,7 +68,12 @@
               "clan": "",
               "portrait": "/fall-portraits/90.webp"
             },
-            null
+            {
+              "name": "Erich-AOW3-YouTube",
+              "faction": "resistance",
+              "clan": "--The-Elite-Reds--",
+              "portrait": "/fall-portraits/102.webp"
+            }
           ]
         },
         {
@@ -86,7 +91,12 @@
               "clan": "",
               "portrait": "/fall-portraits/95.webp"
             },
-            null
+            {
+              "name": "Zloy Santa..",
+              "faction": "resistance",
+              "clan": "-GrandMasters-",
+              "portrait": "/fall-portraits/82.webp"
+            }
           ]
         }
       ]
