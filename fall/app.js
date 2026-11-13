@@ -74,17 +74,21 @@ languageSelect.addEventListener('change', () => {
 const shared = document.documentElement.dataset.mode === 'pages';
 async function poll() {
   try {
-    const response = await fetch(shared ? '../state.json' : '../api/state', { cache: 'no-store' });
+    const feed = document.documentElement.dataset.feed;
+    let response = shared ? await fetch(feed + '?v=' + Math.floor(Date.now() / 5000), { cache: 'no-store' }).catch(() => null)
+      : await fetch('../api/state', { cache: 'no-store' });
+    if (shared && !response?.ok && !state) response = await fetch('../state.json');
+    if (!response) return;
     if (!response.ok) throw new Error(response.status);
     const next = await response.json();
-    if (!state || state.revision !== next.revision) {
+    if (!state || state.revision < next.revision) {
       state = next;
       render();
     }
   } catch (error) {
     console.warn('Fall bracket update failed:', error);
   } finally {
-    window.setTimeout(poll, shared ? 15000 : 1500);
+    window.setTimeout(poll, shared ? 5000 : 1500);
   }
 }
 

@@ -506,7 +506,7 @@
   overflow: hidden;
   background:
     radial-gradient(ellipse at 95% 115%, var(--faction), transparent 47%),
-    repeating-linear-gradient(135deg, #7cf5ff12 0 .06cqw, transparent .06cqw .24cqw) 0 0 / 45% 100% no-repeat,
+    repeating-linear-gradient(135deg, #7cf5ff12 0 .06cqw, transparent .06cqw .24cqw),
     #2a3a40;
 }
 .masters-bracket-resistance { --faction: #b862635f; --emblem: url('resistance.png'); }
@@ -523,6 +523,75 @@
   pointer-events: none;
 }
 .masters-bracket-card.is-eliminated { filter: brightness(.57) saturate(.72); }
+.overlay-stage {
+  width: 100%;
+  height: auto;
+  padding: clamp(12px, 2.73vw, 70px) clamp(12px, 4.1vw, 105px);
+  container-type: inline-size;
+}
+.masters-scoreboard {
+  --score-row: clamp(40px, 3vw, 76px);
+  width: min(100%, clamp(260px, 25.8vw, 660px));
+  display: grid;
+  gap: 3px;
+  font: 700 clamp(15px, 1.28vw, 33px)/1 'Masters Broadcast', 'Arial Narrow', sans-serif;
+  filter: drop-shadow(0 4px 9px #0008);
+}
+.masters-scoreboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: .36em .55em;
+  color: #edfaff;
+  background: #2a3a40;
+  border: 1px solid #51b7c5;
+  box-shadow: inset 0 0 8px #55ddea6b;
+  text-transform: uppercase;
+  font-size: .78em;
+}
+.masters-scoreboard-header span:last-child { color: #b9e5ec; white-space: nowrap; }
+.masters-scoreboard .masters-scoreboard-row {
+  width: 100%;
+  height: var(--score-row);
+  gap: .42em;
+  padding-right: .22em;
+  background-size: 100% 100%;
+}
+.masters-scoreboard .masters-scoreboard-row::before {
+  width: var(--score-row);
+  right: .3em;
+  opacity: .30;
+}
+.masters-scoreboard .masters-scoreboard-row .broadcast-avatar,
+.masters-scoreboard .masters-scoreboard-row .masters-bracket-placeholder {
+  flex: 0 0 var(--score-row);
+  width: var(--score-row);
+  height: var(--score-row);
+  clip-path: none;
+}
+.masters-scoreboard .masters-scoreboard-row.is-eliminated { filter: brightness(.76) saturate(.75); }
+.masters-scoreboard .masters-scoreboard-row.is-winner { box-shadow: inset 0 0 0 1px #5ac3cf; }
+.masters-scoreboard-name, .masters-scoreboard-value { position: relative; z-index: 1; }
+.masters-scoreboard-name {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.masters-scoreboard-value {
+  display: grid;
+  place-items: center;
+  width: calc(var(--score-row) * .75);
+  height: calc(var(--score-row) * .75);
+  background: rgb(14 26 31 / 40%);
+  border: 1px solid #5cc4cc52;
+  border-radius: 2px;
+  font-size: 1.32em;
+}
+.reset-broadcast { margin-left: .5em; }
+.reset-broadcast:disabled { opacity: .5; cursor: default; }
 .masters-bracket-card .broadcast-avatar,
 .masters-bracket-placeholder {
   display: grid;

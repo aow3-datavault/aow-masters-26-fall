@@ -162,7 +162,7 @@ function broadcastPlayer(player, index, winner) {
 function renderVersus() {
   const live = getMatch(state?.publishedId);
   const ready = live?.match.players.every(Boolean);
-  const key = ready ? JSON.stringify([live.match.id, live.match.players]) : '';
+  const key = ready ? JSON.stringify([state.broadcastRevision, live.match.id, live.match.players]) : '';
   if (broadcastKey === key) return;
   if (!ready) {
     replaceBroadcast(key, broadcastStage(t.waiting, '', true), false);
@@ -189,7 +189,7 @@ function renderVersus() {
 function renderMatchResult() {
   const live = getMatch(state?.publishedId);
   const ready = live && isComplete(live.match) && live.match.players.every(Boolean);
-  const key = ready ? JSON.stringify([live.match.id, live.match.players, live.match.winner]) : '';
+  const key = ready ? JSON.stringify([state.broadcastRevision, live.match.id, live.match.players, live.match.scores, live.match.winner]) : '';
   const score = ready ? `${scoreText(live.match, 0)} : ${scoreText(live.match, 1)}` : '';
   if (broadcastKey === key) {
     const scoreNode = app.querySelector('.result-score');
@@ -246,26 +246,25 @@ function renderPodium() {
 
 function renderOverlay() {
   document.body.className = 'overlay-body';
-  const root = el('section', 'overlay-stage');
-  const header = el('header', 'overlay-header');
-  header.append(el('span', 'brand-mark', 'AOW')); header.append(el('span', 'overlay-title', t.title)); header.append(el('span', 'live-tag', t.live));
-  root.append(header);
   const live = getMatch(state?.publishedId);
-  if (live) {
-    const { match, round } = live;
-    const board = el('div', 'scoreboard');
-    board.append(el('div', 'score-meta', roundTitle(round) || t.round));
-    for (let i = 0; i < 2; i++) {
-      const p = match.players?.[i];
-      const side = el('div', `score-side ${match.winner === i ? 'winner' : ''}`);
-      const identity = el('div', 'score-identity');
-      identity.append(el('div', 'score-name', playerName(p)));
-      identity.append(el('div', 'score-detail', [p?.clan, factionName(p)].filter(Boolean).join('  /  ') || ' '));
-      side.append(identity, el('div', 'score-value', String(scoreText(match, i)))); board.append(side);
-    }
-    const game = `BO${match.bestOf} · ${isComplete(match) ? t.final : `${t.game} ${currentGame(match)}`}`;
-    board.append(el('div', 'game-status', game)); root.append(board);
-  } else root.append(el('div', 'overlay-empty', t.waiting));
+  if (!live) return;
+  const { match, round } = live;
+  const root = el('section', 'overlay-stage');
+  const board = el('div', 'masters-scoreboard');
+  const header = el('header', 'masters-scoreboard-header');
+  const series = isComplete(match) ? (lang === 'ru' ? 'Итог' : 'Result') : `${t.game} ${currentGame(match)}`;
+  header.append(el('span', '', roundTitle(round) || t.round), el('span', '', `BO${match.bestOf} · ${series}`));
+  board.append(header);
+  match.players.forEach((player, side) => {
+    const faction = ['confederation', 'resistance'].includes(player?.faction) ? player.faction : 'neutral';
+    const winner = match.winner === side;
+    const row = el('div', `masters-bracket-card masters-scoreboard-row masters-bracket-${faction}${winner ? ' is-winner' : isComplete(match) ? ' is-eliminated' : ''}`);
+    row.append(player ? playerAvatar(player) : el('span', 'masters-bracket-placeholder'),
+      el('span', 'masters-scoreboard-name', playerName(player)),
+      el('strong', 'masters-scoreboard-value', String(scoreText(match, side))));
+    board.append(row);
+  });
+  root.append(board);
   app.append(root);
 }
 
@@ -374,6 +373,7 @@ function renderOperator() {
   top.append(connection, summer, figma, locale);
   shell.append(top);
   shell.append(el('p', 'game-monitor', gameMonitorText()));
+  shell.append(el('p', 'game-monitor pages-monitor', pagesMonitorText()));
   const grid = el('div', 'operator-grid');
   const listPanel = el('section', 'panel rounds-panel');
   listPanel.append(el('h2', '', t.rounds));
@@ -409,6 +409,20 @@ function renderOperator() {
     publish.addEventListener('click', async () => { try { state = await request('/api/publish', { method: 'POST', body: JSON.stringify({ id: match.id }) }); statusMessage = t.updated; render(); } catch (e) { statusMessage = e.message; render(); } });
     previewPanel.append(publish);
   }
+  const reset = el('button', 'button secondary reset-broadcast', lang === 'ru' ? 'СБРОСИТЬ ЭФИР' : 'RESET LIVE');
+  reset.type = 'button';
+  reset.disabled = !state?.publishedId;
+  reset.addEventListener('click', async () => {
+    reset.disabled = true;
+    try {
+      state = await request('/api/reset', { method: 'POST', body: '{}' });
+      statusMessage = lang === 'ru' ? 'Эфир сброшен. Результаты сохранены.' : 'Live match cleared. Results kept.';
+    } catch (error) {
+      statusMessage = error.message;
+    }
+    render();
+  });
+  previewPanel.append(reset);
   right.append(previewPanel);
   const resultPanel = el('section', 'panel result-panel'); resultPanel.append(el('h2', '', t.result));
   if (!chosen) resultPanel.append(el('p', 'muted', t.select));
@@ -436,7 +450,14 @@ function renderOperator() {
 
 async function poll() {
   try {
-    const next = await request(shared ? 'state.json' : '/api/state', { cache: 'no-store' });
+    let next;
+    if (shared) {
+      const feed = document.documentElement.dataset.feed;
+      const response = await fetch(feed + '?v=' + Math.floor(Date.now() / 5000), { cache: 'no-store' }).catch(() => null);
+      next = response?.ok ? await response.json() : state ?? await request('state.json');
+    } else {
+      next = await request('/api/state');
+    }
     if (!state || next.revision > state.revision) {
       state = next;
       if (!getMatch(selectedId)) selectedId = '';
@@ -444,7 +465,24 @@ async function poll() {
     }
   }
   catch { if (!state) render(); }
-  window.setTimeout(poll, shared ? 15000 : 1000);
+  window.setTimeout(poll, shared ? 5000 : 1000);
+}
+
+let pagesStatus;
+function pagesMonitorText() {
+  const labels = lang === 'ru'
+    ? { disabled: 'GitHub: синхронизация выключена', pending: 'GitHub: отправляем обновление…', retrying: 'GitHub: повторяем отправку…', synced: 'GitHub: данные отправлены' }
+    : { disabled: 'GitHub: sync disabled', pending: 'GitHub: sending update…', retrying: 'GitHub: retrying…', synced: 'GitHub: data sent' };
+  return labels[pagesStatus?.phase] ?? '';
+}
+
+async function pollPages() {
+  try {
+    pagesStatus = await request('/api/pages');
+    const monitor = app.querySelector('.pages-monitor');
+    if (monitor) monitor.textContent = pagesMonitorText();
+  } catch {}
+  window.setTimeout(pollPages, 1500);
 }
 
 function gameMonitorText() {
@@ -471,4 +509,7 @@ async function pollGame() {
 prepareCues();
 render();
 poll();
-if (view === 'operator') pollGame();
+if (view === 'operator') {
+  pollGame();
+  pollPages();
+}
