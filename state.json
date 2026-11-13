@@ -1,0 +1,161 @@
+{
+  "season": "Fall",
+  "revision": 0,
+  "publishedId": null,
+  "rounds": [
+    {
+      "title": "1/4 финала",
+      "matches": [
+        {
+          "id": "r1-1",
+          "bestOf": 1,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            {
+              "name": "VT_TaptapBoi C",
+              "faction": "confederation",
+              "clan": "V.E.R.T.E.X",
+              "portrait": "/fall-portraits/103.webp"
+            },
+            {
+              "name": "Nightsoul C",
+              "faction": "confederation",
+              "clan": "",
+              "portrait": "/fall-portraits/106.webp"
+            }
+          ]
+        },
+        {
+          "id": "r1-2",
+          "bestOf": 1,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            {
+              "name": "Call-me-sensei",
+              "faction": "confederation",
+              "clan": "!SUPREME_WARRIORS!",
+              "portrait": "/fall-portraits/87.webp"
+            },
+            {
+              "name": "-FREMEN-",
+              "faction": "confederation",
+              "clan": "-MERCENARIES-",
+              "portrait": "/fall-portraits/101.webp"
+            }
+          ]
+        },
+        {
+          "id": "r1-3",
+          "bestOf": 1,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            {
+              "name": "Y THE BLUE KINGDON",
+              "faction": "confederation",
+              "clan": "",
+              "portrait": "/fall-portraits/90.webp"
+            },
+            null
+          ]
+        },
+        {
+          "id": "r1-4",
+          "bestOf": 1,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            {
+              "name": "SHARAP-05.",
+              "faction": "confederation",
+              "clan": "",
+              "portrait": "/fall-portraits/95.webp"
+            },
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Полуфинал",
+      "matches": [
+        {
+          "id": "r2-1",
+          "bestOf": 3,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            null,
+            null
+          ]
+        },
+        {
+          "id": "r2-2",
+          "bestOf": 3,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Финал",
+      "matches": [
+        {
+          "id": "r3-1",
+          "bestOf": 3,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            null,
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Матч за 3-е место",
+      "matches": [
+        {
+          "id": "third",
+          "bestOf": 1,
+          "scores": [
+            0,
+            0
+          ],
+          "winner": null,
+          "players": [
+            null,
+            null
+          ]
+        }
+      ]
+    }
+  ]
+}

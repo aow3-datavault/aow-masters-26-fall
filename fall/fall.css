@@ -1,0 +1,70 @@
+.playoff-bracket {
+  --card-height: 108px;
+  --half-step: 64px;
+  --lane-gap: 38px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--lane-gap);
+  min-width: 0;
+  height: auto;
+}
+.fall-round {
+  display: grid;
+  grid-template-rows: repeat(8, var(--half-step));
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  padding-top: 46px;
+  position: relative;
+}
+.fall-round-1 { grid-column: 2; }
+.fall-round-2, .fall-round-3 { grid-column: 3; }
+.fall-round-3 { pointer-events: none; }
+.fall-round-3 .fall-match { pointer-events: auto; }
+.fall-round header {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 38px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+.fall-round header h3 { font-size: 25px; margin: 0; }
+.fall-round header span { color: var(--teal); }
+.fall-round-3 header { top: calc(6 * var(--half-step)); }
+.fall-match { align-self: start; position: relative; min-width: 0; min-height: 0; }
+.fall-match .player { height: calc(var(--card-height) / 2); }
+.fall-avatar { display: grid; overflow: hidden; flex-shrink: 0; place-items: center; }
+.fall-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.player-confederation .fall-avatar { background: url('../avatar-confederation.png') center / cover; }
+.player-resistance .fall-avatar { background: url('../avatar-resistance.png') center / cover; }
+.player-neutral .fall-avatar { opacity: .45; }
+.fall-round-0 .fall-match::after, .fall-round-1 .fall-match::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: calc(var(--lane-gap) / 2);
+  height: var(--half-step);
+  border: solid var(--line);
+  border-width: 1px 1px 0 0;
+}
+.fall-round-1 .fall-match::after { height: calc(2 * var(--half-step)); }
+.fall-round-0 .fall-match:nth-of-type(even)::after,
+.fall-round-1 .fall-match:nth-of-type(even)::after { transform: translateY(-100%); border-width: 0 1px 1px 0; }
+.fall-round-1 .fall-match::before, .fall-round-2 .fall-match::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  width: calc(var(--lane-gap) / 2);
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 900px) {
+  .playoff-viewport { overflow: visible; }
+  .playoff-bracket { grid-template-columns: 1fr; gap: 24px; }
+  .fall-round { display: flex; flex-direction: column; grid-area: auto; gap: 10px; padding-top: 0; }
+  .fall-round header, .fall-round-3 header { position: static; }
+  .fall-match::after, .fall-match::before, .bracket-hint { display: none; }
+}

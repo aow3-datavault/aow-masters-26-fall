@@ -1,0 +1,46 @@
+<!doctype html>
+<html data-mode="pages" lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1114" />
+    <title>Art of War Masters '26 Fall</title>
+    <link rel="stylesheet" href="styles.css" /><link rel="stylesheet" href="fall.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Art of War Masters '26 Fall">
+        <span>ART OF WAR MASTERS '26</span>
+      </a>
+      <nav data-i18n-aria-label="navigationLabel" aria-label="Навигация по странице">
+        <a href="#bracket" data-i18n="navBracket">Сетка</a>
+      </nav>
+      <label class="language-switch"><span class="visually-hidden" data-i18n="languageLabel">Язык</span><select id="language-select" data-i18n-aria-label="languageLabel" aria-label="Язык"><option value="ru">RU</option><option value="en">EN</option></select></label>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <h1 id="page-title">ART OF WAR MASTERS '26 FALL</h1>
+        </div>
+      </section>
+
+      <section class="section bracket-section" id="bracket" aria-labelledby="bracket-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="mainStage">Основной этап</p>
+            <h2 id="bracket-title" data-i18n="bracketTitle">Турнирная сетка</h2>
+          </div>
+        </div>
+        <div class="playoff-viewport" tabindex="0" data-i18n-aria-label="bracketLabel" aria-label="Турнирная сетка. На мобильном листайте вправо между стадиями.">
+          <div class="playoff-bracket" id="bracket-content" aria-live="polite"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer><span>ART OF WAR 3: GLOBAL CONFLICT</span><p data-i18n="footer">Art of War Masters '26 Fall · Community tournament</p></footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
